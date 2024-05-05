@@ -4,19 +4,23 @@ services:
   web:
     build: .
     ports:
-      - "3000:3000"
+      - "9000:9000"
     volumes:
       - .:/usr/src/app
     depends_on:
-      - mongo
+      - db
     environment:
       NODE_ENV: development
-  mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
+  # db:
+  #   image: mysql:8.0.28-alpine
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: example
+  #     MYSQL_DATABASE: mydatabase
+  #     MYSQL_USER: myuser
+  #     MYSQL_PASSWORD: mypassword
+  #   ports:
+  #     - "3306:3306"
 
 volumes:
   mongo-data:
