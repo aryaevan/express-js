@@ -1,37 +1,41 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>single page react boilerplate</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Page Vue Boilerplate</title>
 </head>
 
 <body>
-  <div id="react-app"> </div>
+  <div id="vue-app">
+    <p>Data count: {{ count }}</p>
+  </div>
 
-  <!-- TODO convert to Nuxt / Vue 3 -->
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-  <script type="text/babel">
-    // TODO typescript?
-    var App = (props) => {
-      const [count, setCount] = React.useState(0)
-      // TODO CRUD diseases or medicine outgoing depending on your preferred test
-      axios.get('/route?').then((res, err) => {
-        setCount(res.data.length)
-      })
-      // TODO how do you (unit) test frontend code?
-      return (
-        <div >
-          Data count: {count}
-        </div>
-      );
-    };
-    ReactDOM.render(
-      <App />,
-      document.getElementById('react-app')
-    );
+  <!-- Include Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <!-- Include Axios for making HTTP requests -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+    // Create a Vue instance
+    new Vue({
+      el: '#vue-app',
+      data() {
+        return {
+          count: 0
+        };
+      },
+      mounted() {
+        // Make an HTTP GET request to fetch data
+        axios.get('/route?').then((res) => {
+          this.count = res.data.length;
+        }).catch((err) => {
+          console.error('Error fetching data:', err);
+        });
+        // You can write your unit tests using testing libraries like Jest or Mocha
+      }
+    });
   </script>
 </body>
 
