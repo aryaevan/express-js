@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Single Page Vue Boilerplate</title>
+  <!-- Import Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="vue-app" class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded shadow-md">
+      <h1 class="text-2xl font-bold mb-4">Disease Data</h1>
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Disease Name</th>
+            <th class="px-4 py-2">Patient Name</th>
+            <th class="px-4 py-2">Patient Age</th>
+            <th class="px-4 py-2">Picture</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(disease, index) in diseases" :key="index">
+            <td class="border px-4 py-2">{{ disease.name }}</td>
+            <td class="border px-4 py-2">{{ disease.patient_name }}</td>
+            <td class="border px-4 py-2">{{ disease.patient_age }}</td>
+            <td class="border px-4 py-2"><img :src="disease.picture" alt="Disease Picture" class="w-16 h-16"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Import Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <!-- Import Axios for making HTTP requests -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+    // Create a Vue instance
+    new Vue({
+      el: '#vue-app',
+      data() {
+        return {
+          diseases: []
+        };
+      },
+      mounted() {
+        // Make an HTTP GET request to fetch data
+        axios.get('/disease').then((res) => {
+          this.diseases = res.data;
+        }).catch((err) => {
+          console.error('Error fetching data:', err);
+        });
+        // You can write your unit tests using testing libraries like Jest or Mocha
+      }
+    });
+  </script>
+</body>
+
+</html>
