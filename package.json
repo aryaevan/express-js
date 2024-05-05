@@ -20,7 +20,8 @@
     "build:dev": "tsc --watch --preserveWatchOutput",
     "dev": "concurrently \"npm:build:dev\" \"npm:start:dev\"",
     "dev2": "tsc && npm run start:dev",
-    "build:docker": "docker build -t express-js ."
+    "build:docker": "docker build -t express-js .",
+    "debug": "ts-node src/index.ts"
   },
   "author": "aryaevan",
   "license": "ISC"

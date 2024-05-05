@@ -6,7 +6,7 @@ const router = Router();
 const databaseRouter = (db: Database) => {
     router.get('/', (req, res) => {
         try{
-            db.run(`CREATE TABLE disease(
+            db.run(`CREATE TABLE IF NOT EXISTS disease(
                 name            text,
                 picture         text,
                 patient_name    text,
