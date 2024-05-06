@@ -3,12 +3,12 @@ import { Database } from "sqlite3";
 
 const router = Router();
 
-const diseaseRouter = (db: Database) => {
+const patientRouter = (db: Database) => {
     // Create
     router.post('/', (req: Request, res: Response) => {
-        const { name, picture, patient_id } = req.body;
-        const sql = 'INSERT INTO disease (name, picture, patient_id) VALUES (?, ?, ?)';
-        db.run(sql, [name, picture, patient_id], function (err) {
+        const { name, age } = req.body;
+        const sql = 'INSERT INTO patient (name, age) VALUES (?, ?)';
+        db.run(sql, [name, age], function (err) {
             if (err) {
                 console.error('Error inserting data into database:', err);
                 res.status(500).json({ error: 'Error inserting data into database' });
@@ -20,7 +20,7 @@ const diseaseRouter = (db: Database) => {
 
     // Read all
     router.get('/', (req: Request, res: Response) => {
-        db.all('SELECT * FROM disease', (err, data) => {
+        db.all('SELECT * FROM patient', (err, data) => {
             if (err) {
                 console.error('Error fetching data from database:', err);
                 res.status(500).json({ error: 'Error fetching data from database' });
@@ -31,15 +31,15 @@ const diseaseRouter = (db: Database) => {
     });
 
     // Read one
-    router.get('/id/:id', (req: Request, res: Response) => {
+    router.get('/:id', (req: Request, res: Response) => {
         const id = req.params.id;
-        db.get('SELECT * FROM disease WHERE id = ?', [id], (err, data) => {
+        db.get('SELECT * FROM patient WHERE id = ?', [id], (err, data) => {
             if (err) {
                 console.error('Error fetching data from database:', err);
                 res.status(500).json({ error: 'Error fetching data from database' });
             } else {
                 if (!data) {
-                    res.status(404).json({ error: 'Disease not found' });
+                    res.status(404).json({ error: 'Patient not found' });
                 } else {
                     res.json(data);
                 }
@@ -50,14 +50,14 @@ const diseaseRouter = (db: Database) => {
     // Update
     router.put('/:id', (req: Request, res: Response) => {
         const id = req.params.id;
-        const { name, picture, patient_id } = req.body;
-        const sql = 'UPDATE disease SET name = ?, picture = ?, patient_id = ? WHERE id = ?';
-        db.run(sql, [name, picture, patient_id, id], function (err) {
+        const { name, age } = req.body;
+        const sql = 'UPDATE patient SET name = ?, age = ? WHERE id = ?';
+        db.run(sql, [name, age, id], function (err) {
             if (err) {
                 console.error('Error updating data in database:', err);
                 res.status(500).json({ error: 'Error updating data in database' });
             } else {
-                res.json({ message: 'Disease updated successfully' });
+                res.json({ message: 'Patient updated successfully' });
             }
         });
     });
@@ -65,29 +65,12 @@ const diseaseRouter = (db: Database) => {
     // Delete
     router.delete('/:id', (req: Request, res: Response) => {
         const id = req.params.id;
-        db.run('DELETE FROM disease WHERE id = ?', [id], function (err) {
+        db.run('DELETE FROM patient WHERE id = ?', [id], function (err) {
             if (err) {
                 console.error('Error deleting data from database:', err);
                 res.status(500).json({ error: 'Error deleting data from database' });
             } else {
-                res.json({ message: 'Disease deleted successfully' });
-            }
-        });
-    });
-
-    //Get disease with patient
-    router.get('/patient', (req: Request, res: Response) => {
-        const sql = `
-            SELECT disease.*, patient.name AS patient_name, patient.age AS patient_age
-            FROM disease
-            INNER JOIN patient ON disease.patient_id = patient.id
-        `;
-        db.all(sql, (err, data) => {
-            if (err) {
-                console.error('Error fetching data from database:', err);
-                res.status(500).json({ error: 'Error fetching data from database' });
-            } else {
-                res.json(data);
+                res.json({ message: 'Patient deleted successfully' });
             }
         });
     });
@@ -95,4 +78,4 @@ const diseaseRouter = (db: Database) => {
     return router;
 }
 
-export default diseaseRouter;
+export default patientRouter;
